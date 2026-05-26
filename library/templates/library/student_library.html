@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Explore Library</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+/* NAVBAR */
+
+nav{
+background:#1e3a8a;
+padding:20px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:30px;
+font-weight:bold;
+}
+
+.back-btn{
+background:white;
+color:#1e3a8a;
+padding:12px 22px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.back-btn:hover{
+background:#dbeafe;
+}
+
+/* HERO */
+
+.hero{
+padding:60px;
+text-align:center;
+}
+
+.hero h1{
+font-size:55px;
+color:#1e3a8a;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:18px;
+color:#555;
+line-height:1.8;
+max-width:900px;
+margin:auto;
+}
+
+/* CATEGORIES */
+
+.categories{
+display:flex;
+justify-content:center;
+gap:12px;
+flex-wrap:wrap;
+padding:10px 30px 25px;
+}
+
+.category-card{
+background:white;
+padding:10px 18px;
+border-radius:10px;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
+font-weight:bold;
+transition:0.3s;
+}
+
+.category-card a{
+text-decoration:none;
+color:#1e3a8a;
+font-size:14px;
+font-weight:bold;
+}
+
+.category-card:hover{
+transform:translateY(-5px);
+background:#1e3a8a;
+}
+
+.category-card:hover a{
+color:white;
+}
+
+.active-category{
+background:#1e3a8a;
+}
+
+.active-category a{
+color:white;
+}
+
+/* BOOKS */
+
+.books-container{
+padding:30px 50px 60px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:35px;
+}
+
+/* BOOK CARD */
+
+.book-card{
+background:white;
+border-radius:25px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+transition:0.4s;
+position:relative;
+}
+
+.book-card:hover{
+transform:translateY(-10px);
+}
+
+/* FAVORITE HEART */
+
+.favorite-icon{
+position:absolute;
+top:15px;
+right:15px;
+z-index:10;
+font-size:32px;
+}
+
+.favorite-icon a{
+text-decoration:none;
+transition:0.3s;
+}
+
+.favorite-icon a:hover{
+transform:scale(1.2);
+display:inline-block;
+}
+
+/* IMAGE */
+
+.book-card img{
+width:100%;
+height:340px;
+object-fit:cover;
+}
+
+/* CONTENT */
+
+.book-content{
+padding:25px;
+}
+
+.book-content h2{
+color:#1e3a8a;
+margin-bottom:15px;
+font-size:28px;
+}
+
+.book-content h4{
+margin-bottom:10px;
+color:#444;
+font-size:16px;
+}
+
+.book-content p{
+line-height:1.7;
+color:#666;
+margin:20px 0;
+}
+
+/* BUTTONS */
+
+.book-buttons{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.read-btn,
+.download-btn{
+padding:12px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+display:inline-block;
+}
+
+.read-btn{
+background:#1e3a8a;
+color:white;
+}
+
+.read-btn:hover{
+background:#172554;
+}
+
+.download-btn{
+background:#2563eb;
+color:white;
+}
+
+.download-btn:hover{
+background:#1d4ed8;
+}
+
+/* EMPTY */
+
+.empty-books{
+text-align:center;
+padding:60px;
+font-size:22px;
+color:#666;
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+color:white;
+text-align:center;
+padding:25px;
+margin-top:30px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+.books-container{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media(max-width:768px){
+
+nav{
+flex-direction:column;
+gap:20px;
+padding:20px;
+text-align:center;
+}
+
+.hero{
+padding:40px 20px;
+}
+
+.hero h1{
+font-size:40px;
+}
+
+.books-container{
+padding:20px;
+}
+
+}
+
+@media(max-width:700px){
+
+.books-container{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">
+E-Library Hub
+</div>
+
+<a href="{% url 'dashboard' %}"
+class="back-btn">
+
+← Back Dashboard
+
+</a>
+
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<h1>Explore Book Categories</h1>
+
+<p>
+Browse books uploaded by librarians across multiple educational categories.
+Read online, download resources, and save your favorite books.
+</p>
+
+</section>
+
+<!-- CATEGORIES -->
+
+<section class="categories">
+
+<div class="category-card
+{% if not request.GET.category %}
+active-category
+{% endif %}">
+
+<a href="{% url 'student_library' %}">
+📚 All Books
+</a>
+
+</div>
+
+{% for category in categories %}
+
+<div class="category-card
+{% if request.GET.category == category.name %}
+active-category
+{% endif %}">
+
+<a href="?category={{ category.name }}">
+📂 {{ category.name }}
+</a>
+
+</div>
+
+{% endfor %}
+
+</section>
+
+<!-- BOOKS -->
+
+<section class="books-container">
+
+{% for book in books %}
+
+<div class="book-card">
+
+<!-- FAVORITE HEART -->
+
+<div class="favorite-icon">
+
+<a href="{% url 'toggle_favorite' book.id %}">
+
+{% if book.id in favorite_ids %}
+❤️
+{% else %}
+🤍
+{% endif %}
+
+</a>
+
+</div>
+
+<img src="{{ book.cover_image.url }}">
+
+<div class="book-content">
+
+<h2>{{ book.title }}</h2>
+
+<h4>✍️ Author: {{ book.author }}</h4>
+
+<h4>📚 Category: {{ book.category.name }}</h4>
+
+<p>
+{{ book.description|truncatewords:25 }}
+</p>
+
+<div class="book-buttons">
+
+<a href="{% url 'read_book' book.id %}"
+class="read-btn">
+
+📖 Read Book
+
+</a>
+
+<a href="{{ book.book_pdf.url }}"
+download
+class="download-btn">
+
+⬇ Download
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% empty %}
+
+<div class="empty-books">
+
+No books available in this category.
+
+</div>
+
+{% endfor %}
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+© 2026 E-Library Hub | Student Digital Library
+
+</footer>
+
+</body>
+</html>

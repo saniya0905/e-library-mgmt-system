@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Manage Categories</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+/* NAVBAR */
+
+nav{
+background:#1e3a8a;
+padding:20px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:30px;
+font-weight:bold;
+}
+
+.nav-right{
+display:flex;
+align-items:center;
+gap:20px;
+}
+
+.stat-box{
+background:rgba(255,255,255,0.15);
+padding:10px 20px;
+border-radius:12px;
+font-weight:bold;
+}
+
+.back-btn{
+background:white;
+color:#1e3a8a;
+padding:10px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.back-btn:hover{
+background:#dbeafe;
+}
+
+/* HEADER */
+
+.header{
+padding:60px 50px 30px;
+}
+
+.header h1{
+font-size:45px;
+color:#1e3a8a;
+margin-bottom:15px;
+}
+
+.header p{
+font-size:18px;
+line-height:1.8;
+color:#555;
+max-width:1000px;
+}
+
+/* CATEGORY SECTION */
+
+.categories-section{
+padding:20px 50px 60px;
+}
+
+.categories-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:35px;
+}
+
+/* CATEGORY CARD */
+
+.category-card{
+background:white;
+padding:40px 30px;
+border-radius:25px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+transition:0.4s;
+text-align:center;
+position:relative;
+overflow:hidden;
+}
+
+.category-card:hover{
+transform:translateY(-10px);
+}
+
+.category-icon{
+font-size:55px;
+margin-bottom:20px;
+}
+
+.category-card h2{
+color:#1e3a8a;
+margin-bottom:15px;
+font-size:28px;
+}
+
+.category-card p{
+line-height:1.7;
+color:#666;
+margin-bottom:20px;
+}
+
+/* CATEGORY DETAILS */
+
+.details{
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+margin-bottom:20px;
+}
+
+.detail-box{
+background:#eef2ff;
+padding:10px 18px;
+border-radius:12px;
+font-size:14px;
+font-weight:bold;
+color:#1e3a8a;
+}
+
+/* BUTTON */
+
+.view-btn{
+display:inline-block;
+padding:12px 25px;
+background:#1e3a8a;
+color:white;
+text-decoration:none;
+border-radius:12px;
+font-weight:bold;
+transition:0.3s;
+}
+
+.view-btn:hover{
+background:#172554;
+}
+
+/* EMPTY STATE */
+
+.empty{
+background:white;
+padding:80px;
+border-radius:25px;
+text-align:center;
+}
+
+.empty h2{
+color:#1e3a8a;
+margin-bottom:15px;
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+color:white;
+padding:30px;
+text-align:center;
+margin-top:40px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+nav{
+flex-direction:column;
+gap:20px;
+padding:20px;
+}
+
+.header{
+padding:40px 20px;
+text-align:center;
+}
+
+.categories-section{
+padding:20px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">
+E-Library Categories
+</div>
+
+<div class="nav-right">
+
+<div class="stat-box">
+📂 Total Categories: {{ categories|length }}
+</div>
+
+<a href="{% url 'dashboard' %}" class="back-btn">
+← Back Dashboard
+</a>
+
+</div>
+
+</nav>
+
+<!-- HEADER -->
+
+<section class="header">
+
+<h1>Manage Book Categories</h1>
+
+<p>
+Organize books efficiently using dynamic categories. Categories help students,
+librarians, and administrators quickly explore books based on subjects,
+departments, and learning interests.
+</p>
+
+</section>
+
+<!-- CATEGORIES -->
+
+<section class="categories-section">
+
+{% if categories %}
+
+<div class="categories-grid">
+
+{% for category in categories %}
+
+<div class="category-card">
+
+<div class="category-icon">
+📚
+</div>
+
+<h2>{{ category.name }}</h2>
+
+<p>
+Books related to {{ category.name }} are grouped together for easier
+searching, reading, and management inside the E-Library platform.
+</p>
+
+<div class="details">
+
+<div class="detail-box">
+📂 Category ID: {{ category.id }}
+</div>
+
+<div class="detail-box">
+📖 Active Collection
+</div>
+
+</div>
+
+<a href="{% url 'edit_category' category.id %}"
+   class="view-btn">
+
+Manage Category
+
+</a>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty">
+
+<h2>No Categories Found</h2>
+
+<p>
+Categories added from Django Admin Panel will appear here dynamically.
+</p>
+
+</div>
+
+{% endif %}
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+© 2026 E-Library Hub | Category Management System
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{{ book.title }}</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+/* NAVBAR */
+
+nav{
+background:#1e3a8a;
+padding:20px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+.back-btn{
+background:white;
+color:#1e3a8a;
+padding:10px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.back-btn:hover{
+background:#dbeafe;
+}
+
+/* BOOK TITLE */
+
+.book-header{
+padding:30px;
+text-align:center;
+}
+
+.book-header h1{
+color:#1e3a8a;
+font-size:40px;
+margin-bottom:10px;
+}
+
+.book-header p{
+font-size:18px;
+color:#555;
+}
+
+/* CONTROLS */
+
+.controls{
+display:flex;
+justify-content:center;
+align-items:center;
+gap:20px;
+margin-bottom:25px;
+flex-wrap:wrap;
+}
+
+.control-btn{
+background:#1e3a8a;
+color:white;
+border:none;
+padding:12px 22px;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+transition:0.3s;
+}
+
+.control-btn:hover{
+background:#172554;
+}
+
+.page-info{
+font-size:18px;
+font-weight:bold;
+color:#1e3a8a;
+}
+
+/* PDF */
+
+.viewer{
+display:flex;
+justify-content:center;
+padding-bottom:50px;
+}
+
+canvas{
+background:white;
+box-shadow:0 10px 25px rgba(0,0,0,0.15);
+max-width:100%;
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+color:white;
+text-align:center;
+padding:25px;
+margin-top:30px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">
+E-Library Reader
+</div>
+
+<a href="{% url 'reading_progress' %}" class="back-btn">
+← Back
+</a>
+
+</nav>
+
+<div class="book-header">
+
+<h1>{{ book.title }}</h1>
+
+<p>
+Continue reading from your last saved page.
+</p>
+
+</div>
+
+<div class="controls">
+
+<button class="control-btn" onclick="prevPage()">
+⬅ Previous
+</button>
+
+<div class="page-info" id="page_info">
+Loading...
+</div>
+
+<button class="control-btn" onclick="nextPage()">
+Next ➡
+</button>
+
+</div>
+
+<div class="viewer">
+
+<canvas id="pdf-render"></canvas>
+
+</div>
+
+{% csrf_token %}
+
+<footer>
+
+© 2026 E-Library Hub | PDF Reader
+
+</footer>
+
+<script>
+
+const pdfUrl = "{{ book.book_pdf.url }}";
+const bookId = "{{ book.id }}";
+
+const csrfToken =
+document.querySelector(
+'[name=csrfmiddlewaretoken]'
+).value;
+
+let pdfDoc = null;
+
+let pageNum =
+Number("{{ bookmark.current_page|default:'1' }}");
+
+if(pageNum < 1){
+pageNum = 1;
+}
+
+const canvas =
+document.getElementById("pdf-render");
+
+const ctx =
+canvas.getContext("2d");
+
+pdfjsLib.getDocument(pdfUrl).promise.then(function(pdf){
+
+pdfDoc = pdf;
+
+if(pageNum > pdf.numPages){
+pageNum = 1;
+}
+
+renderPage(pageNum);
+
+});
+
+function renderPage(num){
+
+pdfDoc.getPage(num).then(function(page){
+
+const viewport =
+page.getViewport({scale:1.5});
+
+canvas.height = viewport.height;
+canvas.width = viewport.width;
+
+page.render({
+canvasContext:ctx,
+viewport:viewport
+});
+
+document.getElementById(
+"page_info"
+).innerHTML =
+"Page " + num +
+" of " + pdfDoc.numPages;
+
+savePage(num);
+
+});
+
+}
+
+function prevPage(){
+
+if(pageNum <= 1){
+return;
+}
+
+pageNum--;
+
+renderPage(pageNum);
+
+}
+
+function nextPage(){
+
+if(pageNum >= pdfDoc.numPages){
+return;
+}
+
+pageNum++;
+
+renderPage(pageNum);
+
+}
+
+function savePage(page){
+
+fetch("{% url 'save_page' %}",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json",
+"X-CSRFToken":csrfToken
+},
+
+body:JSON.stringify({
+
+book_id:bookId,
+page:page
+
+})
+
+})
+
+.then(response => response.json())
+
+.then(data => {
+
+console.log(
+"Saved page:",
+page
+);
+
+})
+
+.catch(error => {
+
+console.log(
+"Save Error:",
+error
+);
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

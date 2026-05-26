@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Edit Category</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+/* NAVBAR */
+
+nav{
+background:#1e3a8a;
+padding:20px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+.back-btn{
+background:white;
+color:#1e3a8a;
+padding:10px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.back-btn:hover{
+background:#dbeafe;
+}
+
+/* FORM */
+
+.container{
+max-width:700px;
+margin:60px auto;
+background:white;
+padding:40px;
+border-radius:25px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.container h1{
+color:#1e3a8a;
+margin-bottom:25px;
+}
+
+label{
+display:block;
+margin-bottom:10px;
+font-weight:bold;
+color:#444;
+}
+
+input{
+width:100%;
+padding:15px;
+border:1px solid #ddd;
+border-radius:10px;
+margin-bottom:25px;
+font-size:16px;
+}
+
+.update-btn{
+background:#1e3a8a;
+color:white;
+padding:14px 25px;
+border:none;
+border-radius:10px;
+font-weight:bold;
+cursor:pointer;
+font-size:16px;
+}
+
+.update-btn:hover{
+background:#172554;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">
+E-Library Admin
+</div>
+
+<a href="{% url 'manage_categories' %}"
+class="back-btn">
+
+← Back Categories
+
+</a>
+
+</nav>
+
+<div class="container">
+
+<h1>Edit Category</h1>
+
+<form method="POST">
+
+{% csrf_token %}
+
+<label>Category Name</label>
+
+<input
+type="text"
+name="name"
+value="{{ category.name }}"
+required>
+
+<button
+type="submit"
+class="update-btn">
+
+Update Category
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

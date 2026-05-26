@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Books</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+nav{
+background:#1e3a8a;
+padding:20px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+}
+
+.logo{
+font-size:30px;
+font-weight:bold;
+}
+
+.back-btn{
+background:white;
+color:#1e3a8a;
+padding:10px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.hero{
+text-align:center;
+padding:60px;
+}
+
+.hero h1{
+font-size:50px;
+color:#1e3a8a;
+}
+
+.books-container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:30px;
+padding:50px;
+}
+
+.book-card{
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.book-card:hover{
+transform:translateY(-10px);
+}
+
+.book-card img{
+width:100%;
+height:350px;
+object-fit:cover;
+}
+
+.book-content{
+padding:25px;
+}
+
+.book-content h2{
+color:#1e3a8a;
+margin-bottom:10px;
+}
+
+.book-content p{
+margin-bottom:10px;
+color:#555;
+}
+
+.book-content button{
+padding:12px 25px;
+background:#1e3a8a;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+footer{
+background:#0f172a;
+color:white;
+text-align:center;
+padding:25px;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">E-Library Hub</div>
+
+<a href="{% url 'explore' %}" class="back-btn">
+⬅ Back
+</a>
+</nav>
+
+<section class="hero">
+<h1>Business Books</h1>
+</section>
+
+<section class="books-container">
+
+<div class="book-card">
+<img src="https://covers.openlibrary.org/b/id/8235116-L.jpg">
+
+<div class="book-content">
+<h2>Rich Dad Poor Dad</h2>
+<p><strong>Author:</strong> Robert Kiyosaki</p>
+<p>Learn financial education and wealth management.</p>
+
+<a href="{% url 'login' %}">
+<button>Read Book</button>
+</a>
+</div>
+</div>
+
+<div class="book-card">
+<img src="https://covers.openlibrary.org/b/id/10594765-L.jpg">
+
+<div class="book-content">
+<h2>Think and Grow Rich</h2>
+<p><strong>Author:</strong> Napoleon Hill</p>
+<p>Success and mindset strategies for entrepreneurs.</p>
+
+<a href="{% url 'login' %}">
+<button>Read Book</button>
+</a>
+</div>
+</div>
+
+</section>
+
+<footer>
+© 2026 E-Library Hub
+</footer>
+
+</body>
+</html>

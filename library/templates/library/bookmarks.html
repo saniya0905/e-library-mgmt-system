@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>My Bookmarks</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+position:fixed;
+left:0;
+top:0;
+width:260px;
+height:100vh;
+background:#1e3a8a;
+padding:30px 20px;
+color:white;
+}
+
+.sidebar h2{
+text-align:center;
+margin-bottom:40px;
+font-size:28px;
+}
+
+.sidebar a{
+display:block;
+padding:15px 20px;
+margin-bottom:15px;
+background:rgba(255,255,255,0.1);
+border-radius:12px;
+color:white;
+text-decoration:none;
+transition:0.3s;
+font-size:17px;
+}
+
+.sidebar a:hover{
+background:white;
+color:#1e3a8a;
+}
+
+/* MAIN */
+
+.main{
+margin-left:260px;
+padding:40px;
+}
+
+.hero{
+margin-bottom:40px;
+}
+
+.hero h1{
+font-size:45px;
+color:#1e3a8a;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:18px;
+color:#555;
+line-height:1.7;
+}
+
+/* BOOKMARK CARDS */
+
+.bookmarks-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:30px;
+}
+
+.bookmark-card{
+background:white;
+border-radius:25px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+transition:0.3s;
+}
+
+.bookmark-card:hover{
+transform:translateY(-10px);
+}
+
+.bookmark-card img{
+width:100%;
+height:320px;
+object-fit:cover;
+}
+
+.card-content{
+padding:25px;
+}
+
+.card-content h2{
+color:#1e3a8a;
+margin-bottom:15px;
+font-size:28px;
+}
+
+.card-content h4{
+margin-bottom:10px;
+color:#444;
+}
+
+.progress-box{
+background:#eef2ff;
+padding:15px;
+border-radius:15px;
+margin:20px 0;
+}
+
+.progress-box p{
+margin-bottom:10px;
+font-weight:bold;
+color:#1e3a8a;
+}
+
+/* BUTTONS */
+
+.buttons{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+margin-top:20px;
+}
+
+.read-btn,
+.download-btn{
+padding:12px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+display:inline-block;
+}
+
+.read-btn{
+background:#1e3a8a;
+color:white;
+}
+
+.read-btn:hover{
+background:#172554;
+}
+
+.download-btn{
+background:#2563eb;
+color:white;
+}
+
+.download-btn:hover{
+background:#1d4ed8;
+}
+
+/* EMPTY */
+
+.empty{
+background:white;
+padding:50px;
+border-radius:20px;
+text-align:center;
+font-size:22px;
+color:#555;
+}
+
+/* FOOTER */
+
+footer{
+margin-left:260px;
+background:#0f172a;
+color:white;
+text-align:center;
+padding:25px;
+margin-top:50px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1100px){
+
+.bookmarks-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media(max-width:800px){
+
+.sidebar{
+position:relative;
+width:100%;
+height:auto;
+}
+
+.main{
+margin-left:0;
+}
+
+footer{
+margin-left:0;
+}
+
+.bookmarks-grid{
+grid-template-columns:1fr;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<h2>E-Library</h2>
+
+<a href="{% url 'dashboard' %}">
+🏠 Dashboard
+</a>
+
+<a href="{% url 'student_library' %}">
+📚 Explore Library
+</a>
+
+<a href="{% url 'bookmarks' %}">
+🔖 My Bookmarks
+</a>
+
+<a href="{% url 'logout' %}">
+🚪 Logout
+</a>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+<div class="hero">
+
+<h1>My Reading Progress</h1>
+
+<p>
+Track your reading journey, continue books from the last saved page,
+and manage your bookmarked books easily.
+</p>
+
+</div>
+
+
+{% if bookmarks %}
+
+<div class="bookmarks-grid">
+
+{% for bookmark in bookmarks %}
+
+<div class="bookmark-card">
+
+<img src="{{ bookmark.book.cover_image.url }}">
+
+<div class="card-content">
+
+<h2>{{ bookmark.book.title }}</h2>
+
+<h4>✍️ {{ bookmark.book.author }}</h4>
+
+<h4>📂 {{ bookmark.book.category.name }}</h4>
+
+<div class="progress-box">
+
+<p>
+📖 Current Page:
+{{ bookmark.current_page }}
+</p>
+
+<p>
+{% if bookmark.completed %}
+✅ Completed
+{% else %}
+🕒 Reading In Progress
+{% endif %}
+</p>
+
+</div>
+
+<div class="buttons">
+
+<a href="{{ bookmark.book.book_pdf.url }}"
+target="_blank"
+class="read-btn">
+
+Continue Reading
+
+</a>
+
+<a href="{{ bookmark.book.book_pdf.url }}"
+download
+class="download-btn">
+
+Download
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty">
+
+No bookmarked books available yet.
+
+</div>
+
+{% endif %}
+
+</div>
+
+<!-- FOOTER -->
+
+<footer>
+
+© 2026 E-Library Hub | Student Bookmarks
+
+</footer>
+
+</body>
+</html>

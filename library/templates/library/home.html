@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Library Management System</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #333;
+    }
+
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 50px;
+      background: #1e3a8a;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links li {
+      list-style: none;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 18px;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: white;
+      transition: 0.3s;
+    }
+
+    .nav-links li a:hover {
+      color: #c7d2fe;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .nav-links li:hover {
+      color: #c7d2fe;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .register-btn,
+    .login-btn {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    .register-btn {
+      background: #2563eb;
+      color: white;
+    }
+
+    .register-btn:hover {
+      background: #1d4ed8;
+    }
+
+    .login-btn {
+      background: white;
+      color: #1e3a8a;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background: white;
+      min-width: 180px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 12px;
+      text-decoration: none;
+      color: #333;
+      transition: 0.3s;
+    }
+
+    .dropdown-content a:hover {
+      background: #eef2ff;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 80px 50px;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .hero-text {
+      flex: 1;
+    }
+
+    .hero-text h1 {
+      font-size: 55px;
+      color: #1e3a8a;
+      margin-bottom: 20px;
+    }
+
+    .hero-text p {
+      font-size: 20px;
+      line-height: 1.8;
+      margin-bottom: 30px;
+    }
+
+    .hero-buttons button {
+      padding: 14px 30px;
+      border-radius: 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      margin-right: 15px;
+      transition: 0.3s;
+    }
+
+    .explore-btn {
+      background: #1e3a8a;
+      color: white;
+    }
+
+    .explore-btn:hover {
+      background: #172554;
+    }
+
+    .learn-btn {
+      background: white;
+      border: 2px solid #1e3a8a;
+      color: #1e3a8a;
+    }
+
+    .learn-btn:hover {
+      background: #eef2ff;
+    }
+
+    .hero img {
+      width: 500px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      transition: 0.4s;
+    }
+
+    .hero img:hover {
+      transform: scale(1.03);
+    }
+
+    /* Sections */
+    section {
+      padding: 80px 50px;
+      text-align: center;
+    }
+
+    .gray {
+      background: #eef2ff;
+    }
+
+    section h2 {
+      font-size: 42px;
+      color: #1e3a8a;
+      margin-bottom: 20px;
+    }
+
+    section p {
+      font-size: 20px;
+      line-height: 1.8;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    /* Cards */
+    .cards {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+      flex-wrap: wrap;
+    }
+
+    .card {
+      background: #eef2ff;
+      width: 300px;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card h3 {
+      margin-bottom: 15px;
+      color: #1e3a8a;
+    }
+
+    /* Contact */
+    .contact {
+      background: #1e3a8a;
+      color: white;
+    }
+
+    .contact h2 {
+      color: white;
+    }
+
+    .contact-grid {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 40px;
+    }
+
+    .contact-card {
+      background: rgba(255,255,255,0.15);
+      padding: 25px;
+      width: 250px;
+      border-radius: 20px;
+    }
+
+    /* Footer */
+    footer {
+      background: #0f172a;
+      color: white;
+      padding-top: 50px;
+    }
+
+    .footer-container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 40px;
+      padding: 0 50px 40px;
+    }
+
+    .footer-section {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .footer-section h2,
+    .footer-section h3 {
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .footer-section p,
+    .footer-section li {
+      color: #cbd5e1;
+      line-height: 1.8;
+      list-style: none;
+    }
+
+    .footer-section ul {
+      padding: 0;
+    }
+
+    .footer-section a {
+      text-decoration: none;
+      color: #cbd5e1;
+      transition: 0.3s;
+    }
+
+    .footer-section a:hover {
+      color: #60a5fa;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #334155;
+      text-align: center;
+      padding: 20px;
+      color: #94a3b8;
+      font-size: 15px;
+    }
+
+    /* =========================
+   COMMON SECTIONS
+========================= */
+
+.section,
+.sectionGray{
+    padding:100px 8%;
+}
+
+.section{
+    background:#ffffff;
+}
+
+.sectionGray{
+    background:#f8faff;
+}
+
+.sectionTitle{
+    text-align:center;
+    font-size:48px;
+    font-weight:700;
+    color:#1e3a8a;
+    margin-bottom:25px;
+    position:relative;
+}
+
+.sectionTitle::after{
+    content:"";
+    width:90px;
+    height:4px;
+    background:#2563eb;
+    display:block;
+    margin:15px auto 0;
+    border-radius:10px;
+}
+
+.sectionText{
+    max-width:950px;
+    margin:0 auto;
+    text-align:center;
+    font-size:19px;
+    line-height:1.9;
+    color:#555;
+}
+
+/* =========================
+   CARD GRID
+========================= */
+
+.cardContainer{
+    margin-top:60px;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:30px;
+}
+
+/* =========================
+   CARDS
+========================= */
+
+.card{
+    background:white;
+    padding:35px;
+    border-radius:24px;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.06);
+
+    transition:all .4s ease;
+
+    border:1px solid #eef2ff;
+
+    text-align:center;
+
+    height:100%;
+}
+
+.card:hover{
+    transform:translateY(-12px);
+
+    box-shadow:
+    0 20px 40px rgba(30,58,138,0.15);
+}
+
+.card h3{
+    color:#1e3a8a;
+    font-size:26px;
+    margin-bottom:18px;
+}
+
+.card p{
+    color:#666;
+    line-height:1.8;
+    font-size:17px;
+}
+
+/* =========================
+   FEATURE CARDS
+========================= */
+
+.featureCard{
+    position:relative;
+    overflow:hidden;
+}
+
+.featureCard::before{
+    content:"";
+
+    position:absolute;
+    top:0;
+    left:0;
+
+    width:100%;
+    height:5px;
+
+    background:#1e3a8a;
+}
+
+/* =========================
+   CONTACT SECTION
+========================= */
+.contactSection{
+    padding:100px 8%;
+    background:#ffffff;
+    text-align:center;
+}
+
+.contactTitle{
+    font-size:48px;
+    font-weight:700;
+    color:#1e3a8a;
+    margin-bottom:25px;
+    position:relative;
+}
+
+.contactTitle::after{
+    content:"";
+    width:90px;
+    height:4px;
+    background:#2563eb;
+    display:block;
+    margin:15px auto 0;
+    border-radius:10px;
+}
+
+.contactDescription{
+    max-width:900px;
+    margin:0 auto 50px;
+    font-size:19px;
+    line-height:1.9;
+    color:#555;
+}
+
+.contactGrid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+    gap:30px;
+}
+
+.contactCard{
+    background:#ffffff;
+    padding:35px;
+    border-radius:24px;
+
+    box-shadow:
+    0 10px 25px rgba(0,0,0,0.06);
+
+    border:1px solid #eef2ff;
+
+    transition:all .4s ease;
+}
+
+.contactCard:hover{
+    transform:translateY(-12px);
+
+    box-shadow:
+    0 20px 40px rgba(30,58,138,0.15);
+}
+
+.contactCard h3{
+    color:#1e3a8a;
+    font-size:24px;
+    margin-bottom:15px;
+}
+
+.contactCard p{
+    color:#666;
+    line-height:1.8;
+    font-size:17px;
+}
+
+.contactGrid{
+    display:grid;
+    grid-template-columns:
+    repeat(auto-fit,minmax(250px,1fr));
+
+    gap:25px;
+}
+
+.contactCard:hover{
+    transform:translateY(-8px);
+
+    background:
+    rgba(255,255,255,0.20);
+}
+
+.contactCard h3{
+    font-size:24px;
+    margin-bottom:15px;
+}
+
+.contactCard p{
+    font-size:17px;
+    line-height:1.8;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:992px){
+
+.section,
+.sectionGray,
+.contactSection{
+    padding:80px 6%;
+}
+
+.sectionTitle,
+.contactTitle{
+    font-size:40px;
+}
+
+}
+
+@media(max-width:768px){
+
+.section,
+.sectionGray,
+.contactSection{
+    padding:70px 5%;
+}
+
+.sectionTitle,
+.contactTitle{
+    font-size:34px;
+}
+
+.sectionText{
+    font-size:17px;
+}
+
+.card{
+    padding:25px;
+}
+
+.card h3{
+    font-size:22px;
+}
+
+.contactGrid{
+    grid-template-columns:1fr;
+}
+
+}
+
+@media(max-width:480px){
+
+.sectionTitle,
+.contactTitle{
+    font-size:30px;
+}
+
+.sectionText{
+    font-size:16px;
+    line-height:1.8;
+}
+
+.cardContainer{
+    grid-template-columns:1fr;
+}
+
+}
+.container{
+    max-width:1300px;
+    margin:auto;
+}
+    /* Responsive */
+    @media (max-width: 768px) {
+      nav {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .hero {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .hero img {
+        width: 100%;
+      }
+
+      .hero-text h1 {
+        font-size: 40px;
+      }
+    }
+
+    .highlightCard{
+    position:relative;
+    overflow:hidden;
+    transition:all .4s ease;
+}
+
+.highlightCard::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:5px;
+    background:#1e3a8a;
+}
+
+.highlightCard:hover{
+    transform:translateY(-12px);
+    box-shadow:0 20px 40px rgba(30,58,138,0.15);
+}
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">E-Library Hub</div>
+
+    <ul class="nav-links">
+      <li><a href="#about">About Us</a></li>
+      <li><a href="#who">Who We Are</a></li>
+      <li><a href="#what">What We Do</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ul>
+
+    <a href="/register/">
+  <button class="register-btn">Register</button>
+</a>
+      <div class="dropdown">
+        <button class="login-btn">Login</button>
+
+        <div class="dropdown-content">
+          <a href="/login/">Librarian Login</a>
+          <a href="/login/">Admin Login</a>
+          <a href="/login/">Student Login</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-text">
+      <h1>Smart & Dynamic E-Library Management System</h1>
+
+      <p>
+        Welcome to E-Library Hub, a modern digital library platform for students,
+        librarians, and administrators. Access books online, manage resources
+        efficiently, and enjoy an interactive learning experience.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="{% url 'explore' %}">
+  <button class="explore-btn">Explore Library</button>
+</a>
+    
+      </div>
+    </div>
+
+    <div>
+      <img
+        src="https://images.unsplash.com/photo-1521587760476-6c12a4b040da?q=80&w=1200&auto=format&fit=crop"
+        alt="Library"
+      />
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="section">
+    <h2 class="sectionTitle">About Us</h2>
+
+    <p class="sectionText">
+        E-Library Hub is a modern Digital Library Management System designed
+        to simplify the way educational resources are accessed and managed.
+        Our platform connects students, librarians, and administrators through
+        a centralized digital environment where books, PDFs, and learning
+        materials can be organized, accessed, and monitored efficiently.
+    </p>
+
+    <p class="sectionText" style="margin-top:20px;">
+        By combining technology with education, we aim to provide a seamless
+        reading experience that encourages learning, improves accessibility,
+        and promotes digital transformation in libraries.
+    </p>
+</section>
+
+  <!-- Who We Are -->
+  <section id="who" class="sectionGray">
+    <h2 class="sectionTitle">Who We Are</h2>
+
+    <p class="sectionText">
+        We are a dedicated team focused on building innovative educational
+        technology solutions that improve learning experiences and simplify
+        resource management for institutions.
+    </p>
+
+    <div class="cardContainer">
+
+        <div class="card featureCard">
+            <h3>🎓 Student Focused</h3>
+            <p>
+                Empowering students with easy access to digital books,
+                bookmarks, reading progress tracking, and personalized
+                learning resources.
+            </p>
+        </div>
+
+        <div class="card featureCard">
+            <h3>📚 Librarian Driven</h3>
+            <p>
+                Providing librarians with efficient tools to upload books,
+                organize categories, and monitor student reading activities.
+            </p>
+        </div>
+
+        <div class="card featureCard">
+            <h3>🛡️ Administration Ready</h3>
+            <p>
+                Enabling administrators to manage users, monitor system
+                activities, and maintain a well-structured digital library.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+  <!-- What We Do -->
+  <section id="what" class="section">
+    <h2 class="sectionTitle">What We Do</h2>
+
+    <div class="cardContainer">
+
+        <div class="card featureCard">
+            <h3>📖 Digital Book Access</h3>
+            <p>
+                Students can browse, read, and access digital books from
+                anywhere at any time through a secure online platform.
+            </p>
+        </div>
+
+        <div class="card featureCard">
+            <h3>🔖 Reading Progress Tracking</h3>
+            <p>
+                Automatically save reading progress and continue reading
+                from the last viewed page without losing track.
+            </p>
+        </div>
+
+        <div class="card featureCard">
+            <h3>❤️ Favorite Collections</h3>
+            <p>
+                Users can save their favorite books and quickly access them
+                whenever needed.
+            </p>
+        </div>
+
+        <div class="card featureCard">
+            <h3>📚 Library Management</h3>
+            <p>
+                Librarians can upload books, organize categories, and manage
+                educational resources efficiently.
+            </p>
+        </div>
+
+        <div class="card featureCard">
+            <h3>📊 Reading Activity Monitoring</h3>
+            <p>
+                Track student reading activities and monitor engagement
+                through detailed reading history records.
+            </p>
+        </div>
+
+        <div class="card featureCard">
+            <h3>⚙️ Administrative Control</h3>
+            <p>
+                Manage students, librarians, books, and categories through
+                a centralized administrative dashboard.
+            </p>
+        </div>
+
+    </div>
+</section>
+
+  <!-- Contact -->
+  <section id="contact" class="contactSection">
+
+    <h2 class="contactTitle">Contact Us</h2>
+
+    <p class="contactDescription">
+        Have questions, suggestions, or need assistance?
+        Our team is always ready to help you make the most of your
+        digital learning experience.
+    </p>
+
+    <div class="contactGrid">
+
+        <div class="contactCard highlightCard">
+            <h3>📍 Address</h3>
+            <p>Hyderabad, Telangana, India</p>
+        </div>
+
+        <div class="contactCard highlightCard">
+            <h3>📧 Email</h3>
+            <p>support@elibraryhub.com</p>
+        </div>
+
+        <div class="contactCard highlightCard">
+            <h3>📞 Phone</h3>
+            <p>+91 98765 43210</p>
+        </div>
+    </div>
+</section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+
+      <div class="footer-section">
+        <h2>E-Library Hub</h2>
+        <p>
+          A modern digital library management platform designed for students,
+          librarians, and educational institutions.
+        </p>
+      </div>
+
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#who">Who We Are</a></li>
+          <li><a href="#what">What We Do</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h3>Services</h3>
+        <ul>
+          <li>Book Management</li>
+          <li>Student Dashboard</li>
+          <li>Librarian Panel</li>
+          <li>Admin Analytics</li>
+        </ul>
+      </div>
+
+      
+
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 E-Library Hub | All Rights Reserved
+    </div>
+  </footer>
+
+</body>
+</html>

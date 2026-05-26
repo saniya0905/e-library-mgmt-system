@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Manage Books</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+/* NAVBAR */
+
+nav{
+background:#1e3a8a;
+padding:20px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:30px;
+font-weight:bold;
+}
+
+.nav-right{
+display:flex;
+gap:20px;
+align-items:center;
+}
+
+.stat-box{
+background:rgba(255,255,255,0.15);
+padding:10px 20px;
+border-radius:12px;
+font-weight:bold;
+}
+
+.back-btn{
+background:white;
+color:#1e3a8a;
+padding:10px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.back-btn:hover{
+background:#dbeafe;
+}
+
+/* HEADER */
+
+.header{
+padding:60px 50px 20px;
+}
+
+.header h1{
+font-size:45px;
+color:#1e3a8a;
+margin-bottom:15px;
+}
+
+.header p{
+font-size:18px;
+color:#555;
+line-height:1.8;
+}
+
+/* BOOK GRID */
+
+.books-container{
+padding:30px 50px 60px;
+}
+
+.books-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+gap:35px;
+}
+
+/* BOOK CARD */
+
+.book-card{
+background:white;
+border-radius:25px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+transition:0.4s;
+position:relative;
+}
+
+.book-card:hover{
+transform:translateY(-10px);
+}
+
+.book-image{
+position:relative;
+}
+
+.book-image img{
+width:100%;
+height:350px;
+object-fit:cover;
+}
+
+.category-badge{
+position:absolute;
+top:15px;
+left:15px;
+background:#1e3a8a;
+color:white;
+padding:8px 15px;
+border-radius:20px;
+font-size:14px;
+font-weight:bold;
+}
+
+/* BOOK CONTENT */
+
+.book-content{
+padding:25px;
+}
+
+.book-content h2{
+color:#1e3a8a;
+margin-bottom:12px;
+font-size:28px;
+}
+
+.author{
+color:#444;
+font-size:17px;
+margin-bottom:15px;
+}
+
+.description{
+line-height:1.7;
+color:#666;
+margin-bottom:20px;
+}
+
+/* DETAILS */
+
+.details{
+display:flex;
+justify-content:space-between;
+margin-bottom:20px;
+font-size:15px;
+color:#555;
+}
+
+/* BUTTONS */
+
+.actions{
+display:flex;
+gap:15px;
+}
+
+.read-btn,
+.edit-btn{
+
+flex:1;
+text-align:center;
+padding:12px;
+border-radius:12px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.read-btn{
+background:#1e3a8a;
+color:white;
+}
+
+.read-btn:hover{
+background:#172554;
+}
+
+.edit-btn{
+background:#dbeafe;
+color:#1e3a8a;
+}
+
+.edit-btn:hover{
+background:#bfdbfe;
+}
+
+/* EMPTY STATE */
+
+.empty{
+text-align:center;
+padding:80px;
+background:white;
+border-radius:20px;
+}
+
+.empty h2{
+color:#1e3a8a;
+margin-bottom:15px;
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+color:white;
+padding:30px;
+text-align:center;
+margin-top:40px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:768px){
+
+nav{
+flex-direction:column;
+gap:20px;
+padding:20px;
+}
+
+.header{
+padding:40px 20px;
+text-align:center;
+}
+
+.books-container{
+padding:20px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">
+E-Library Admin
+</div>
+
+<div class="nav-right">
+
+<div class="stat-box">
+📚 Total Books: {{ books|length }}
+</div>
+
+<a href="{% url 'dashboard' %}" class="back-btn">
+← Back Dashboard
+</a>
+
+</div>
+
+</nav>
+
+<!-- HEADER -->
+
+<section class="header">
+
+<h1>Manage Library Books</h1>
+
+<p>
+View, organize, and manage all uploaded books dynamically from the database.
+Admins can monitor categories, authors, PDFs, and uploaded resources.
+</p>
+
+</section>
+
+<!-- BOOKS -->
+
+<section class="books-container">
+
+{% if books %}
+
+<div class="books-grid">
+
+{% for book in books %}
+
+<div class="book-card">
+
+<div class="book-image">
+
+<img src="{{ book.cover_image.url }}" alt="{{ book.title }}">
+
+<div class="category-badge">
+{{ book.category.name }}
+</div>
+
+</div>
+
+<div class="book-content">
+
+<h2>{{ book.title }}</h2>
+
+<p class="author">
+✍️ {{ book.author }}
+</p>
+
+<p class="description">
+{{ book.description|truncatewords:25 }}
+</p>
+
+<div class="details">
+
+<span>
+📅 {{ book.created_at|date:"d M Y" }}
+</span>
+
+<span>
+📂 {{ book.category.name }}
+</span>
+
+</div>
+
+<div class="actions">
+
+<a href="{{ book.book_pdf.url }}"
+   target="_blank"
+   class="read-btn">
+
+Read Book
+
+</a>
+
+<a href="{% url 'edit_book' book.id %}"
+   class="edit-btn">
+
+Edit
+
+</a>
+
+</div>
+
+</div>
+</div>
+
+{% endfor %}
+
+</div>
+
+{% else %}
+
+<div class="empty">
+
+<h2>No Books Available</h2>
+
+<p>
+Books uploaded from Django Admin Panel will appear here dynamically.
+</p>
+
+</div>
+
+{% endif %}
+
+</section>
+
+<!-- FOOTER -->
+
+<footer>
+
+© 2026 E-Library Hub | Admin Book Management System
+
+</footer>
+
+</body>
+</html>

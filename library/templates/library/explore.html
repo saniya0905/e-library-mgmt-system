@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore Books</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, sans-serif;
+    }
+
+    body{
+      background:#f4f7fb;
+      color:#333;
+    }
+
+    nav{
+      background:#1e3a8a;
+      color:white;
+      padding:20px 50px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .logo{
+      font-size:30px;
+      font-weight:bold;
+    }
+
+    .back-btn{
+      background:white;
+      color:#1e3a8a;
+      padding:10px 20px;
+      border-radius:10px;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    .hero{
+      text-align:center;
+      padding:70px 20px;
+    }
+
+    .hero h1{
+      font-size:50px;
+      color:#1e3a8a;
+      margin-bottom:20px;
+    }
+
+    .hero p{
+      font-size:20px;
+      color:#555;
+    }
+
+    .categories{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+      gap:30px;
+      padding:50px;
+    }
+
+    .card{
+      background:white;
+      padding:30px;
+      border-radius:20px;
+      box-shadow:0 5px 15px rgba(0,0,0,0.1);
+      transition:0.3s;
+      text-align:center;
+    }
+
+    .card:hover{
+      transform:translateY(-10px);
+    }
+
+    .card h2{
+      color:#1e3a8a;
+      margin:20px 0;
+    }
+
+    .card p{
+      color:#666;
+      line-height:1.7;
+    }
+
+    .card button{
+      margin-top:20px;
+      padding:12px 25px;
+      border:none;
+      border-radius:10px;
+      background:#1e3a8a;
+      color:white;
+      cursor:pointer;
+    }
+
+    footer{
+      background:#0f172a;
+      color:white;
+      text-align:center;
+      padding:25px;
+      margin-top:40px;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">E-Library Hub</div>
+    <a href="{% url 'home' %}" class="back-btn">⬅ Back Home</a>
+  </nav>
+
+  <section class="hero">
+    <h1>Explore Book Categories</h1>
+    <p>Discover thousands of books from different categories.</p>
+  </section>
+
+  <section class="categories">
+
+    <div class="card">
+      <h2>📘 Programming</h2>
+      <p>Learn Java, Python, C++, Web Development, AI, and more.</p>
+      <a href="{% url 'programming_books' %}">
+  <button>View Books</button>
+</a>
+    </div>
+
+    <div class="card">
+      <h2>📖 Literature</h2>
+      <p>Explore novels, poems, stories, and famous literary works.</p>
+      <a href="{% url 'literature_books' %}">
+  <button>View Books</button>
+</a>
+    </div>
+
+    <div class="card">
+      <h2>🧪 Science</h2>
+      <p>Access Physics, Chemistry, Biology, and research materials.</p>
+      <a href="{% url 'science_books' %}">
+  <button>View Books</button>
+</a>
+    </div>
+
+    <div class="card">
+      <h2>📊 Business</h2>
+      <p>Management, finance, economics, and entrepreneurship books.</p>
+      <a href="{% url 'business_books' %}">
+  <button>View Books</button>
+</a>
+    </div>
+
+    <div class="card">
+      <h2>⚙ Engineering</h2>
+      <p>Mechanical, Civil, Electrical, and Computer Engineering books.</p>
+      <a href="{% url 'engineering_books' %}">
+  <button>View Books</button>
+</a>
+    </div>
+
+    <div class="card">
+      <h2>🌍 History</h2>
+      <p>Learn world history, culture, geography, and civilizations.</p>
+      <a href="{% url 'history_books' %}">
+  <button>View Books</button>
+</a>
+    </div>
+
+  </section>
+
+  <footer>
+    © 2026 E-Library Hub | Explore Knowledge Digitally
+  </footer>
+
+</body>
+</html>
+

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+display:flex;
+background:#f4f7fb;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:260px;
+height:100vh;
+background:#1e3a8a;
+position:fixed;
+left:0;
+top:0;
+padding:30px 20px;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.logo{
+color:white;
+font-size:30px;
+font-weight:bold;
+margin-bottom:50px;
+text-align:center;
+}
+
+/* NAV LINKS */
+
+.nav-links{
+display:flex;
+flex-direction:column;
+gap:20px;
+}
+
+.nav-links a{
+text-decoration:none;
+color:white;
+padding:15px 20px;
+border-radius:12px;
+transition:0.3s;
+font-size:17px;
+font-weight:bold;
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.nav-links a:hover{
+background:rgba(255,255,255,0.15);
+transform:translateX(5px);
+}
+
+/* LOGOUT */
+
+.logout-btn{
+background:white;
+color:#1e3a8a !important;
+text-align:center;
+padding:15px;
+border-radius:12px;
+font-weight:bold;
+text-decoration:none;
+}
+
+/* MAIN CONTENT */
+
+.main-content{
+margin-left:260px;
+width:calc(100% - 260px);
+}
+
+/* TOPBAR */
+
+.topbar{
+background:white;
+padding:25px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+box-shadow:0 2px 10px rgba(0,0,0,0.08);
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.topbar h1{
+color:#1e3a8a;
+font-size:35px;
+}
+
+.admin-info{
+background:#eef2ff;
+padding:12px 20px;
+border-radius:12px;
+font-weight:bold;
+color:#1e3a8a;
+}
+
+/* HERO */
+
+.hero{
+padding:50px 40px 20px;
+}
+
+.hero h2{
+font-size:45px;
+color:#1e3a8a;
+margin-bottom:15px;
+}
+
+.hero p{
+font-size:18px;
+line-height:1.8;
+color:#555;
+}
+
+/* CARDS */
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+gap:35px;
+padding:40px;
+}
+
+.card-link{
+text-decoration:none;
+color:inherit;
+}
+
+.card{
+background:white;
+padding:40px;
+border-radius:25px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+transition:0.4s;
+position:relative;
+overflow:hidden;
+}
+
+.card:hover{
+transform:translateY(-10px);
+}
+
+.card h2{
+color:#1e3a8a;
+margin-bottom:20px;
+font-size:28px;
+}
+
+.card h1{
+font-size:55px;
+color:#2563eb;
+margin-bottom:10px;
+}
+
+.card p{
+color:#666;
+font-size:17px;
+line-height:1.7;
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+color:white;
+text-align:center;
+padding:25px;
+margin-top:30px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:900px){
+
+.sidebar{
+width:100%;
+height:auto;
+position:relative;
+}
+
+.main-content{
+margin-left:0;
+width:100%;
+}
+
+body{
+flex-direction:column;
+}
+
+.cards{
+padding:20px;
+}
+
+.topbar{
+padding:20px;
+flex-direction:column;
+gap:15px;
+text-align:center;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div>
+
+<div class="logo">
+E-Library
+</div>
+
+<div class="nav-links">
+
+<a href="{% url 'dashboard' %}">
+🏠 Dashboard
+</a>
+
+<a href="{% url 'manage_books' %}">
+📚 Manage Books
+</a>
+
+<a href="{% url 'manage_students' %}">
+👨‍🎓 Students
+</a>
+
+<a href="{% url 'manage_librarians' %}">
+🛡️ Librarians
+</a>
+
+<a href="{% url 'manage_categories' %}">
+📂 Categories
+</a>
+
+</div>
+
+</div>
+
+<a href="{% url 'logout' %}" class="logout-btn">
+🚪 Logout
+</a>
+
+</div>
+
+<!-- MAIN CONTENT -->
+
+<div class="main-content">
+
+<!-- TOPBAR -->
+
+<div class="topbar">
+
+<h1>Admin Dashboard</h1>
+
+<div class="admin-info">
+Welcome, {{ request.user.username }}
+</div>
+
+</div>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<h2>Library Management Overview</h2>
+
+<p>
+Manage books, categories, librarians, and student records dynamically
+through the centralized E-Library Admin Panel.
+Monitor educational resources, user activities, and digital learning materials efficiently.
+</p>
+
+</section>
+
+<!-- CARDS -->
+<section class="cards">
+
+<div class="card">
+
+<h2>📚 Total Books</h2>
+
+<h1 class="count blue">
+{{ total_books }}
+</h1>
+
+<p>
+Total books available in the library.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>👨‍🎓 Students</h2>
+
+<h1 class="count green">
+{{ total_students }}
+</h1>
+
+<p>
+Registered student accounts.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>🛡️ Librarians</h2>
+
+<h1 class="count red">
+{{ total_librarians }}
+</h1>
+
+<p>
+Active librarians managing resources.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>📂 Categories</h2>
+
+<h1 class="count purple">
+{{ total_categories }}
+</h1>
+
+<p>
+Book categories available in the system.
+</p>
+
+</div>
+
+</section>
+<!-- FOOTER -->
+
+<footer>
+
+© 2026 E-Library Hub | Admin Management System
+
+</footer>
+
+</div>
+
+</body>
+</html>

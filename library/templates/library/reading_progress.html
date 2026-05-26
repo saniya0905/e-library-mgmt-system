@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Reading Progress</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+/* NAVBAR */
+
+nav{
+background:#1e3a8a;
+padding:20px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:30px;
+font-weight:bold;
+}
+
+.back-btn{
+background:white;
+color:#1e3a8a;
+padding:12px 22px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.back-btn:hover{
+background:#dbeafe;
+}
+
+/* HERO */
+
+.hero{
+padding:60px 50px 30px;
+text-align:center;
+}
+
+.hero h1{
+font-size:55px;
+color:#1e3a8a;
+margin-bottom:20px;
+}
+
+.hero p{
+font-size:18px;
+color:#555;
+line-height:1.8;
+max-width:900px;
+margin:auto;
+}
+
+/* BOOK GRID */
+
+.books-grid{
+padding:20px 50px 60px;
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:35px;
+}
+
+/* BOOK CARD */
+
+.book-card{
+background:white;
+border-radius:25px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+transition:0.4s;
+}
+
+.book-card:hover{
+transform:translateY(-10px);
+}
+
+.book-card img{
+width:100%;
+height:340px;
+object-fit:cover;
+}
+
+/* CONTENT */
+
+.content{
+padding:25px;
+}
+
+.content h2{
+color:#1e3a8a;
+margin-bottom:15px;
+font-size:28px;
+}
+
+.content p{
+margin-bottom:12px;
+color:#555;
+line-height:1.7;
+font-size:16px;
+}
+
+/* PROGRESS BOX */
+
+.progress-box{
+background:#eef2ff;
+padding:18px;
+border-radius:15px;
+margin-top:20px;
+}
+
+.progress-box p{
+font-weight:bold;
+color:#1e3a8a;
+margin-bottom:10px;
+}
+
+/* BUTTONS */
+
+.book-buttons{
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+margin-top:20px;
+}
+
+.read-btn,
+.download-btn{
+padding:12px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+display:inline-block;
+}
+
+.read-btn{
+background:#1e3a8a;
+color:white;
+}
+
+.read-btn:hover{
+background:#172554;
+}
+
+.download-btn{
+background:#2563eb;
+color:white;
+}
+
+.download-btn:hover{
+background:#1d4ed8;
+}
+
+/* EMPTY STATE */
+
+.empty{
+background:white;
+padding:60px;
+border-radius:20px;
+text-align:center;
+font-size:22px;
+color:#666;
+margin:40px 50px;
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+color:white;
+text-align:center;
+padding:25px;
+margin-top:30px;
+}
+
+/* RESPONSIVE */
+
+@media(max-width:1000px){
+
+.books-grid{
+grid-template-columns:repeat(2,1fr);
+}
+
+}
+
+@media(max-width:700px){
+
+nav{
+flex-direction:column;
+gap:20px;
+padding:20px;
+text-align:center;
+}
+
+.hero{
+padding:40px 20px;
+}
+
+.hero h1{
+font-size:40px;
+}
+
+.books-grid{
+padding:20px;
+grid-template-columns:1fr;
+}
+
+.empty{
+margin:20px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">
+E-Library Hub
+</div>
+
+<a href="{% url 'dashboard' %}"
+class="back-btn">
+
+← Back Dashboard
+
+</a>
+
+</nav>
+
+<!-- HERO -->
+
+<section class="hero">
+
+<h1>Continue Reading</h1>
+
+<p>
+Resume your reading journey from the last saved page.
+Track your reading progress and continue learning anytime through the E-Library platform.
+</p>
+
+</section>
+
+<!-- BOOKS -->
+
+{% if bookmarks %}
+
+<section class="books-grid">
+
+{% for bookmark in bookmarks %}
+
+<div class="book-card">
+
+<img src="{{ bookmark.book.cover_image.url }}">
+
+<div class="content">
+
+<h2>{{ bookmark.book.title }}</h2>
+
+<p>
+✍️ <b>Author:</b>
+{{ bookmark.book.author }}
+</p>
+
+<p>
+📂 <b>Category:</b>
+{{ bookmark.book.category.name }}
+</p>
+
+<p>
+📝 {{ bookmark.book.description|truncatewords:20 }}
+</p>
+
+<div class="progress-box">
+
+<p>
+📖 Last Saved Page:
+{{ bookmark.current_page }}
+</p>
+
+<p>
+
+{% if bookmark.completed %}
+
+✅ Completed
+
+{% else %}
+
+🕒 Reading In Progress
+
+{% endif %}
+
+</p>
+
+</div>
+
+<div class="book-buttons">
+
+<a href="{% url 'read_book' bookmark.book.id %}"
+   class="read-btn">
+
+📖 Continue Reading
+
+</a>
+
+<a href="{{ bookmark.book.book_pdf.url }}"
+download
+class="download-btn">
+
+⬇ Download
+
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+{% endfor %}
+
+</section>
+
+{% else %}
+
+<div class="empty">
+
+No reading progress available yet.
+
+</div>
+
+{% endif %}
+
+<!-- FOOTER -->
+
+<footer>
+
+© 2026 E-Library Hub | Reading Progress
+
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet"
+href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <title>Login</title>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial,sans-serif;
+    }
+
+    body{
+background:#eef2ff;
+min-height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding-top:90px;
+}
+
+    .login-box{
+background:white;
+width:450px;
+padding:40px;
+border-radius:25px;
+box-shadow:0 15px 40px rgba(30,58,138,0.15);
+border-top:5px solid #1e3a8a;
+}
+
+    h1{
+      text-align:center;
+      color:#1e3a8a;
+      margin-bottom:30px;
+    }
+
+    input,select{
+      width:100%;
+      padding:14px;
+      margin-bottom:20px;
+      border-radius:10px;
+      border:1px solid #ccc;
+      font-size:16px;
+    }
+
+    button{
+      width:100%;
+      padding:14px;
+      background:#1e3a8a;
+      color:white;
+      border:none;
+      border-radius:10px;
+      font-size:17px;
+      cursor:pointer;
+    }
+
+    button:hover{
+      background:#172554;
+    }
+
+    .links{
+      margin-top:20px;
+      text-align:center;
+    }
+
+    .links a{
+      color:#1e3a8a;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    /* NAVBAR */
+
+nav{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:#1e3a8a;
+padding:18px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+z-index:1000;
+box-shadow:0 2px 10px rgba(0,0,0,0.2);
+}
+
+.logo{
+color:white;
+font-size:28px;
+font-weight:bold;
+}
+
+.home-btn{
+background:white;
+color:#1e3a8a;
+padding:10px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+transition:0.3s;
+}
+
+.home-btn:hover{
+background:#dbeafe;
+}
+   
+.password-wrapper{
+position:relative;
+margin-bottom:20px;
+}
+
+.password-wrapper input{
+width:100%;
+padding:14px;
+padding-right:50px;
+border-radius:10px;
+border:1px solid #ccc;
+font-size:16px;
+margin-bottom:0;
+}
+
+.toggle-password{
+position:absolute;
+right:15px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+font-size:20px;
+color:#666;
+}
+
+.toggle-password:hover{
+color:#1e3a8a;
+}
+
+  </style>
+</head>
+<body>
+<body>
+
+<!-- NAVBAR -->
+
+<nav>
+
+<div class="logo">
+E-Library Hub
+</div>
+
+<a href="{% url 'home' %}" class="home-btn">
+🏠 Home
+</a>
+
+</nav>
+
+<div class="container">
+  <div class="login-box">
+    <h1>Login</h1>
+
+    {% if messages %}
+  {% for message in messages %}
+    <div style="
+      background:#dbeafe;
+      color:#1e3a8a;
+      padding:15px;
+      margin-bottom:20px;
+      border-radius:10px;
+      text-align:center;
+      font-weight:bold;
+    ">
+      {{ message }}
+    </div>
+  {% endfor %}
+{% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+      <input type="text"
+           name="username"
+           placeholder="Enter Username"
+           required>
+      <div class="password-wrapper">
+
+<input
+type="password"
+id="password"
+name="password"
+placeholder="Password"
+required>
+
+<i class="bi bi-eye-slash toggle-password"
+id="togglePassword"></i>
+
+</div>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="links">
+      <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+    </div>
+  </div>
+<script>
+
+const togglePassword =
+document.getElementById('togglePassword');
+
+const password =
+document.getElementById('password');
+
+togglePassword.addEventListener('click', function(){
+
+if(password.type === 'password'){
+
+password.type = 'text';
+
+this.classList.remove('bi-eye-slash');
+this.classList.add('bi-eye');
+
+}
+else{
+
+password.type = 'password';
+
+this.classList.remove('bi-eye');
+this.classList.add('bi-eye-slash');
+
+}
+
+});
+
+</script>
+</body>
+</html>
+
+</html>

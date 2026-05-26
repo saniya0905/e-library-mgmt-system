@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Manage Librarians</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+nav{
+background:#1e3a8a;
+padding:20px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+}
+
+.logo{
+font-size:28px;
+font-weight:bold;
+}
+
+.back-btn{
+background:white;
+color:#1e3a8a;
+padding:10px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.container{
+padding:50px;
+}
+
+.container h1{
+color:#1e3a8a;
+margin-bottom:30px;
+}
+
+.table-container{
+background:white;
+padding:30px;
+border-radius:20px;
+box-shadow:0 5px 15px rgba(0,0,0,0.1);
+overflow-x:auto;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th{
+background:#1e3a8a;
+color:white;
+padding:15px;
+text-align:left;
+}
+
+td{
+padding:15px;
+border-bottom:1px solid #ddd;
+}
+
+tr:hover{
+background:#eef2ff;
+}
+
+footer{
+background:#0f172a;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:40px;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+<div class="logo">Manage Librarians</div>
+
+<a href="{% url 'dashboard' %}" class="back-btn">
+Back
+</a>
+</nav>
+
+<div class="container">
+
+<h1>Registered Librarians</h1>
+
+<div class="table-container">
+
+<table>
+
+<tr>
+<th>ID</th>
+<th>Username</th>
+<th>Email</th>
+<th>Role</th>
+<th>Date Joined</th>
+</tr>
+
+{% for librarian in librarians %}
+
+<tr>
+<td>{{ librarian.user.id }}</td>
+<td>{{ librarian.user.username }}</td>
+<td>{{ librarian.user.email }}</td>
+<td>{{ librarian.role }}</td>
+<td>{{ librarian.user.date_joined }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+</div>
+
+<footer>
+© 2026 E-Library Hub
+</footer>
+
+</body>
+</html>

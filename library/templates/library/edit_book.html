@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Edit Book</title>
+
+<style>
+
+body{
+background:#f4f7fb;
+font-family:Arial,sans-serif;
+margin:0;
+}
+
+nav{
+background:#1e3a8a;
+padding:20px 40px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+}
+
+.back-btn{
+background:white;
+color:#1e3a8a;
+padding:10px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.container{
+max-width:800px;
+margin:50px auto;
+background:white;
+padding:40px;
+border-radius:25px;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+h1{
+color:#1e3a8a;
+margin-bottom:30px;
+}
+
+input,
+textarea{
+width:100%;
+padding:14px;
+margin-bottom:20px;
+border:1px solid #ddd;
+border-radius:10px;
+font-size:16px;
+}
+
+textarea{
+height:150px;
+resize:none;
+}
+
+button{
+background:#1e3a8a;
+color:white;
+border:none;
+padding:14px 25px;
+border-radius:10px;
+font-size:16px;
+cursor:pointer;
+font-weight:bold;
+}
+
+button:hover{
+background:#172554;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<h2>E-Library Admin</h2>
+
+<a href="{% url 'manage_books' %}"
+class="back-btn">
+
+← Back
+
+</a>
+
+</nav>
+
+<div class="container">
+
+<h1>Edit Book</h1>
+
+<form method="POST"
+      enctype="multipart/form-data">
+
+{% csrf_token %}
+
+<input
+type="text"
+name="title"
+value="{{ book.title }}"
+required>
+
+<input
+type="text"
+name="author"
+value="{{ book.author }}"
+required>
+
+<textarea
+name="description"
+required>{{ book.description }}</textarea>
+
+<label>
+Cover Image
+</label>
+
+<input
+type="file"
+name="cover_image">
+
+<label>
+Book PDF
+</label>
+
+<input
+type="file"
+name="book_pdf">
+
+<button type="submit">
+
+Update Book
+
+</button>
+
+</form>
+
+</div>
+
+</body>
+</html>

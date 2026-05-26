@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reading Activity</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+
+body{
+background:#f4f7fb;
+}
+
+/* NAVBAR */
+
+nav{
+background:#1e3a8a;
+padding:20px 50px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+color:white;
+position:sticky;
+top:0;
+z-index:1000;
+}
+
+.logo{
+font-size:30px;
+font-weight:bold;
+}
+
+.back-btn{
+background:white;
+color:#1e3a8a;
+padding:10px 20px;
+border-radius:10px;
+text-decoration:none;
+font-weight:bold;
+}
+
+.back-btn:hover{
+background:#dbeafe;
+}
+
+/* HEADER */
+
+.header{
+padding:60px 50px 30px;
+}
+
+.header h1{
+font-size:45px;
+color:#1e3a8a;
+margin-bottom:15px;
+}
+
+.header p{
+font-size:18px;
+color:#555;
+line-height:1.8;
+}
+
+/* TABLE */
+
+.activity-section{
+padding:20px 50px 60px;
+}
+
+.activity-table{
+width:100%;
+border-collapse:collapse;
+background:white;
+border-radius:20px;
+overflow:hidden;
+box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.activity-table th{
+background:#1e3a8a;
+color:white;
+padding:18px;
+text-align:left;
+}
+
+.activity-table td{
+padding:18px;
+border-bottom:1px solid #eee;
+}
+
+.activity-table tr:hover{
+background:#f8fafc;
+}
+
+.page-badge{
+background:#dbeafe;
+padding:8px 15px;
+border-radius:10px;
+font-weight:bold;
+color:#1e3a8a;
+}
+
+/* EMPTY */
+
+.empty{
+background:white;
+padding:80px;
+text-align:center;
+border-radius:20px;
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+color:white;
+padding:25px;
+text-align:center;
+margin-top:40px;
+}
+
+</style>
+</head>
+
+<body>
+
+<nav>
+
+<div class="logo">
+Reading Activity
+</div>
+
+<a href="{% url 'dashboard' %}" class="back-btn">
+← Back Dashboard
+</a>
+
+</nav>
+
+<section class="header">
+
+<h1>Student Reading Activity</h1>
+
+<p>
+Monitor which students are reading books and track their latest reading progress.
+</p>
+
+</section>
+
+<section class="activity-section">
+
+{% if activities %}
+
+<table class="activity-table">
+
+<tr>
+<th>Student</th>
+<th>Book</th>
+<th>Current Page</th>
+<th>Last Updated</th>
+</tr>
+
+{% for activity in activities %}
+
+<tr>
+
+<td>
+👤 {{ activity.student.username }}
+</td>
+
+<td>
+📚 {{ activity.book.title }}
+</td>
+
+<td>
+<span class="page-badge">
+Page {{ activity.current_page }}
+</span>
+</td>
+
+<td>
+{{ activity.last_read|date:"d M Y H:i" }}
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% else %}
+
+<div class="empty">
+
+<h2>No Reading Activity Found</h2>
+
+<p>
+Students have not started reading any books yet.
+</p>
+
+</div>
+
+{% endif %}
+
+</section>
+
+<footer>
+
+© 2026 E-Library Hub | Reading Activity
+
+</footer>
+
+</body>
+</html>
